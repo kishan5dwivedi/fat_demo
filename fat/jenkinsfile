@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                // Build the Maven project using batch script
+                bat 'mvn clean install'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                // Build Docker image
+                script {
+                    dockerImage = docker.build('docker-kishan')
+                }
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                // Run Docker container with adjusted port mapping
+                script {
+                    dockerImage.run('-p 8081:8080 -d')
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Additional steps on successful build
+            echo 'Build successful - Deploy or Notify'
+        }
+        failure {
+            // Actions to take on build failure
+            echo 'Build failed - Notify or Rollback'
+        }
+    }
+}
