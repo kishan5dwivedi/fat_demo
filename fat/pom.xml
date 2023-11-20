@@ -4,4 +4,6 @@
   <artifactId>fat</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>doc_jen_fat</name>
+  <build><finalName>devops-integration</finalName></build>
+  
 </project>
